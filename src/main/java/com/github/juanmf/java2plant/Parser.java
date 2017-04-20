@@ -75,23 +75,23 @@ public class Parser {
 	 *         related Types.
 	 */
 	public static String parse(String packageToPase, Filter<Class<? extends Relation>> relationTypeFilter, Filter<Class<?>> classesFilter,
-			Filter<Relation> relationsFilter, String targetFilename) throws ClassNotFoundException {
+			Filter<Relation> relationsFilter, String targetFilename, boolean scanChildren) throws ClassNotFoundException {
 		List<ClassLoader> classLoadersList = new LinkedList<>();
 
-		return parse(packageToPase, relationTypeFilter, classesFilter, relationsFilter, classLoadersList, targetFilename);
+		return parse(packageToPase, relationTypeFilter, classesFilter, relationsFilter, classLoadersList, targetFilename, scanChildren);
 	}
 
 	public static String parse(String packageToPase, Filter<Class<? extends Relation>> relationTypeFilter, Filter<Class<?>> classesFilter,
-			Filter<Relation> relationsFilter, ClassLoader classLoader, String targetFilename) {
+			Filter<Relation> relationsFilter, ClassLoader classLoader, String targetFilename, boolean scanChildren) {
 		List<ClassLoader> classLoadersList = new LinkedList<>();
 		classLoadersList.add(classLoader);
-		return parse(packageToPase, relationTypeFilter, classesFilter, relationsFilter, classLoadersList, targetFilename);
+		return parse(packageToPase, relationTypeFilter, classesFilter, relationsFilter, classLoadersList, targetFilename, scanChildren);
 	}
 
 	public static String parse(String packageToPase, Filter<Class<? extends Relation>> relationTypeFilter, Filter<Class<?>> classesFilter,
-			Filter<Relation> relationsFilter, List<ClassLoader> classLoadersList, String targetFilename) {
+			Filter<Relation> relationsFilter, List<ClassLoader> classLoadersList, String targetFilename, boolean scanChildren) {
 		Set<Relation> relations = new HashSet<Relation>();
-		Set<Class<?>> classes = getTypes(packageToPase, classLoadersList);
+		Set<Class<?>> classes = getTypes(packageToPase, classLoadersList, scanChildren);
 		for (Class<?> aClass : classes) {
 			addFromTypeRelations(relations, aClass);
 		}
@@ -102,11 +102,11 @@ public class Parser {
 		return eventBus;
 	}
 
-	private static Set<Class<?>> getTypes(String packageToPase, List<ClassLoader> classLoadersList) {
+	private static Set<Class<?>> getTypes(String packageToPase, List<ClassLoader> classLoadersList, boolean scanChildren) {
 		Collection<URL> urls = getUrls(classLoadersList);
 		Set<Class<?>> classes = new HashSet<>();
 		for (String aPackage : TypesHelper.splitPackages(packageToPase)) {
-			classes.addAll(getPackageTypes(aPackage, urls));
+			classes.addAll(getPackageTypes(aPackage, urls, scanChildren));
 		}
 		addSuperClassesAndInterfaces(classes);
 		return classes;
@@ -139,7 +139,7 @@ public class Parser {
 		addInterfaces(superclass, newClasses);
 	}
 
-	private static Collection<? extends Class<?>> getPackageTypes(String packageToPase, Collection<URL> urls) {
+	private static Collection<? extends Class<?>> getPackageTypes(String packageToPase, Collection<URL> urls, boolean scanChildren) {
 		Set<Class<?>> classes = new HashSet<>();
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
 				.setScanners(new SubTypesScanner(false /* exclude Object.class */), new ResourcesScanner(), new TypeElementsScanner()).setUrls(urls)

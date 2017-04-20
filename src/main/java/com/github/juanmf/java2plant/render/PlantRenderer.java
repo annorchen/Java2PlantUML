@@ -60,7 +60,7 @@ public class PlantRenderer {
 
     private final NotesRenderer notesRenderer;
     private final String relevantPackages;
-
+    
     static {
         MethodPrinter mp = new MethodPrinter();
         memberPrinters.put(Field.class, new FieldPrinter());
@@ -311,14 +311,51 @@ public class PlantRenderer {
             Iterator<? extends Type> it = Arrays.asList(paramClasses).iterator();
             while (it.hasNext()) {
                 Type c = it.next();
-                params.append(TypesHelper.getSimpleName(c.toString()));
+                String primitivType = getPrimitvTypeString(c);
+                if(StringUtils.isEmpty(primitivType)) {
+                	params.append(TypesHelper.getSimpleName(c.toString()));
+                } else {
+                	params.append(primitivType);
+                }
                 if (it.hasNext()) {
                     params.append(", ");
                 }
             }
             return params.toString();
         }
-    }
+
+		/**
+		 * [Z = boolean
+		 * [B = byte
+		 * [S = short
+		 * [I = int
+		 * [J = long
+		 * [F = float
+		 * [D = double
+		 * [C = char
+		 */
+		private String getPrimitvTypeString(Type c) {
+			String result = null;
+			if (c == byte[].class) {
+				result = "byte []";
+			} else if (c == boolean[].class) {
+				result = "boolean []";
+			} else if (c == short[].class) {
+				result = "short []";
+			} else if (c == int[].class) {
+				result = "int []";
+			} else if (c == long[].class) {
+				result = "long []";
+			} else if (c == float[].class) {
+				result = "float []";
+			} else if (c == double[].class) {
+				result = "double []";
+			} else if (c == char[].class) {
+				result = "char []";
+			}
+			return result;
+		}
+	}
 
     private enum Modifiers {
         PUBLIC("+"),

@@ -15,6 +15,11 @@
  */
 package com.github.juanmf.java2plant.render.filters;
 
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import com.github.juanmf.java2plant.Parser;
 import com.github.juanmf.java2plant.render.PlantRenderer;
 import com.github.juanmf.java2plant.render.event.RejectingBaseInterfaceEvent;
@@ -24,12 +29,6 @@ import com.github.juanmf.java2plant.structure.Relation;
 import com.github.juanmf.java2plant.structure.Use;
 import com.github.juanmf.java2plant.util.TypesHelper;
 import com.google.common.base.Predicate;
-
-import javax.annotation.Nullable;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * Filters control the output by providing a configurable way to limit noise.
@@ -100,6 +99,7 @@ public class Filters {
     public static final ForbiddenFilter<Class<?>> FILTER_ALLOW_ALL_CLASSES;
     public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_ANONYMOUS;
     public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_PRIMITIVES;
+    public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_EXCEPTION;
     public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_BASE_CLASSES;
 
     /**
@@ -124,6 +124,7 @@ public class Filters {
 
         FILTER_FORBID_ANONYMOUS = new ForbiddenRexegFilter();
         FILTER_FORBID_PRIMITIVES = new ForbiddenRexegFilter<>();
+        FILTER_FORBID_EXCEPTION = new ForbiddenRexegFilter();
         FILTER_FORBID_BASE_CLASSES = new ForbiddenRexegFilter<>();
 
         FILTER_CHAIN_RELATION_STANDARD = new ChainFilter<>();
@@ -170,6 +171,7 @@ public class Filters {
         FILTER_FORBID_EXTENSION.addItem(Extension.class);
         FILTER_FORBID_ANONYMOUS.addAllowedItem(Pattern.compile(".*\\$\\d.*"));
         FILTER_FORBID_PRIMITIVES.addAllowedItem(Pattern.compile("[^.]"));
+        FILTER_FORBID_EXCEPTION.addAllowedItem(Pattern.compile(".*Exception"));
         FILTER_FORBID_BASE_CLASSES.addAllowedItem(Pattern.compile("java\\.(lang|io)\\..*"));
 
         FILTER_RELATION_FORBID_TO_PRIMITIVE.setFilter(FILTER_FORBID_PRIMITIVES);
@@ -199,8 +201,9 @@ public class Filters {
 
         // Classes Filters
         FILTERS.put("FILTER_ALLOW_ALL_CLASSES", FILTER_ALLOW_ALL_CLASSES);
-        FILTERS.put("FILTER_FORBID_ANONIMOUS", FILTER_FORBID_ANONYMOUS);
+        FILTERS.put("FILTER_FORBID_ANONYMOUS", FILTER_FORBID_ANONYMOUS);
         FILTERS.put("FILTER_FORBID_PRIMITIVES", FILTER_FORBID_PRIMITIVES);
+        FILTERS.put("FILTER_FORBID_EXCEPTION", FILTER_FORBID_EXCEPTION);
         FILTERS.put("FILTER_FORBID_BASE_CLASSES", FILTER_FORBID_BASE_CLASSES);
 
         // Relations Filters

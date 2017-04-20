@@ -37,6 +37,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import com.github.juanmf.java2plant.Parser;
 import com.github.juanmf.java2plant.render.filters.ChainFilter;
+import com.github.juanmf.java2plant.render.filters.Filter;
 
 /**
  * Usage:
@@ -128,8 +129,8 @@ public class Parse extends AbstractMojo {
     /**
      * If given one or more single Class names, and this is set, the hierarchy will be traversed downstream.
      */
-    @Parameter(property = "parse.scanChildren")
-    private Boolean scanChildren;
+    @Parameter(property = "parse.scanChildren", defaultValue = "true")
+    private boolean scanChildren;
 
     @Component
     private MavenProject project;
@@ -159,7 +160,7 @@ public class Parse extends AbstractMojo {
 
             getLog().info("Following is the PlantUML src: \n" + Parser.parse(
                     thePackage, FILTERS.get(this.relationTypeFilter), FILTERS.get(this.classesFilter),
-                    FILTERS.get(this.relationsFilter), loader, this.targetFilename));
+                    FILTERS.get(this.relationsFilter), loader, this.targetFilename, scanChildren));
 
         } catch (DependencyResolutionRequiredException e) {
             throw new MojoExecutionException("Something went wrong", e);
@@ -207,7 +208,8 @@ public class Parse extends AbstractMojo {
         for (String filterName : customClassesFilter.split("\\s*,\\s*")) {
             filterExists(filterName);
             // Could explode if wrong filterType
-            filter.addFilter(FILTERS.get(filterName));
+            Filter filter2 = FILTERS.get(filterName);
+			filter.addFilter(filter2);
         }
     }
 
