@@ -109,8 +109,8 @@ public class PlantRenderer {
         sb.append("\n' Relations \n\n");
         addRelations(sb);
 
-        sb.append("\n' Notes \n\n");
-        addNotes(sb);
+//        sb.append("\n' Notes \n\n");
+//        addNotes(sb);
 
         sb.append("@enduml\n");
 
