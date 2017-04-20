@@ -15,6 +15,10 @@
  */
 package com.github.juanmf.java2plant.goal;
 
+import static com.github.juanmf.java2plant.render.filters.Filters.CHAIN_CLASSES_CUSTOM_NAME;
+import static com.github.juanmf.java2plant.render.filters.Filters.CHAIN_RELATIONS_CUSTOM_NAME;
+import static com.github.juanmf.java2plant.render.filters.Filters.CHAIN_RELATION_TYPE_CUSTOM_NAME;
+import static com.github.juanmf.java2plant.render.filters.Filters.FILTERS;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,9 +26,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.github.juanmf.java2plant.render.filters.ChainFilter;
-import com.github.juanmf.java2plant.render.filters.Filter;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -34,13 +35,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-
 import com.github.juanmf.java2plant.Parser;
-
-import static com.github.juanmf.java2plant.render.filters.Filters.CHAIN_CLASSES_CUSTOM_NAME;
-import static com.github.juanmf.java2plant.render.filters.Filters.CHAIN_RELATIONS_CUSTOM_NAME;
-import static com.github.juanmf.java2plant.render.filters.Filters.CHAIN_RELATION_TYPE_CUSTOM_NAME;
-import static com.github.juanmf.java2plant.render.filters.Filters.FILTERS;
+import com.github.juanmf.java2plant.render.filters.ChainFilter;
 
 /**
  * Usage:
@@ -125,6 +121,9 @@ public class Parse extends AbstractMojo {
 
     @Parameter(property = "parse.customRelationsFilter")
     private String customRelationsFilter;
+    
+    @Parameter(property = "parse.targetFilename", required = true)
+    private String targetFilename;
 
     /**
      * If given one or more single Class names, and this is set, the hierarchy will be traversed downstream.
@@ -160,7 +159,7 @@ public class Parse extends AbstractMojo {
 
             getLog().info("Following is the PlantUML src: \n" + Parser.parse(
                     thePackage, FILTERS.get(this.relationTypeFilter), FILTERS.get(this.classesFilter),
-                    FILTERS.get(this.relationsFilter), loader));
+                    FILTERS.get(this.relationsFilter), loader, this.targetFilename));
 
         } catch (DependencyResolutionRequiredException e) {
             throw new MojoExecutionException("Something went wrong", e);

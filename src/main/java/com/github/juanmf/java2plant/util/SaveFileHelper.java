@@ -19,7 +19,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.SecurityException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -30,8 +29,8 @@ public class SaveFileHelper {
    private static final String FILE_EXTENSION = "puml";     // default file extension that IDE and browser plugins like
    private static final String J2PUML = "j2puml";
 
-   public static void save(StringBuilder pumlContent, String path) throws IOException {
-      final File file = new File(getPathName(path));
+   public static void save(StringBuilder pumlContent, String fileName) throws IOException {
+      final File file = new File(fileName);
       BufferedWriter bw;
       bw = new BufferedWriter(new FileWriter(file));
       bw.write(pumlContent.toString());
@@ -40,6 +39,7 @@ public class SaveFileHelper {
       bw.close();
    }
 
+   @Deprecated
    private static String getPathName(String route) throws IOException {
       if (route == null) {
          route = TARGET_DIRECTORY;

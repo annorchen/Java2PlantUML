@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.apache.commons.lang3.StringUtils;
 import com.github.juanmf.java2plant.Parser;
 import com.github.juanmf.java2plant.render.filters.Filter;
 import com.github.juanmf.java2plant.render.filters.Filters;
@@ -39,10 +39,8 @@ import com.github.juanmf.java2plant.structure.Relation;
 import com.github.juanmf.java2plant.structure.Use;
 import com.github.juanmf.java2plant.util.SaveFileHelper;
 import com.github.juanmf.java2plant.util.TypesHelper;
-
 import com.google.common.eventbus.EventBus;
 import edu.emory.mathcs.backport.java.util.Collections;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author juanmf@gmail.com
@@ -97,14 +95,13 @@ public class PlantRenderer {
      *   * Classes
      *   * Relations
      * </pre>
+     * @param targetFile 
      *
      * @return palntUML src code
      */
-    public String render() {
+    public String render(String targetFile) {
         StringBuilder sb = new StringBuilder();
-        sb.append("@startuml\n").append("' Created by juanmf@gmail.com\n\n")
-                .append("' Using left to right direction to try a better layout feel free to edit\n")
-                .append("left to right direction\n");
+        sb.append("@startuml\n");
 
         sb.append("' Participants \n\n");
         addClasses(sb);
@@ -121,7 +118,7 @@ public class PlantRenderer {
         // with Maven (getLog()) to alert the User there was a problem creating
         // the PlantUML file
         try {
-            SaveFileHelper.save(sb, TARGET_DIRECTORY);
+            SaveFileHelper.save(sb, targetFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
