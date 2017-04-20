@@ -67,8 +67,16 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		  <!-- 
 		<plugins>
+		    <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+		  <!-- 
 			<plugin>
 				<groupId>com.github.juanmf</groupId>
 				<artifactId>java2PlantUML-maven-plugin</artifactId>
@@ -124,7 +132,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-		</plugins>
 			 -->
+		</plugins>
 	</build>
 </project>
