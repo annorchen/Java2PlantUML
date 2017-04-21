@@ -111,7 +111,7 @@ public class PlantRenderer {
 		//        sb.append("\n' Notes \n\n");
 		//        addNotes(sb);
 
-		sb.append("legend right\n");
+		sb.append("legend left\n");
 		DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
 		Date date = new Date();
 		sb.append("Printed: " + dateFormat.format(date) + "\n");
