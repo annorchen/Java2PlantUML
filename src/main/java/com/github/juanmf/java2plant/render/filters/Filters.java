@@ -100,6 +100,7 @@ public class Filters {
     public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_ANONYMOUS;
     public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_PRIMITIVES;
     public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_EXCEPTION;
+    public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_PACKAGEINFO;
     public static final ForbiddenRexegFilter<Class<?>> FILTER_FORBID_BASE_CLASSES;
 
     /**
@@ -125,6 +126,7 @@ public class Filters {
         FILTER_FORBID_ANONYMOUS = new ForbiddenRexegFilter();
         FILTER_FORBID_PRIMITIVES = new ForbiddenRexegFilter<>();
         FILTER_FORBID_EXCEPTION = new ForbiddenRexegFilter();
+        FILTER_FORBID_PACKAGEINFO = new ForbiddenRexegFilter();
         FILTER_FORBID_BASE_CLASSES = new ForbiddenRexegFilter<>();
 
         FILTER_CHAIN_RELATION_STANDARD = new ChainFilter<>();
@@ -169,10 +171,11 @@ public class Filters {
         FILTER_FORBID_USES.addItem(Use.class);
         FILTER_FORBID_AGGREGATION.addItem(Aggregation.class);
         FILTER_FORBID_EXTENSION.addItem(Extension.class);
-        FILTER_FORBID_ANONYMOUS.addAllowedItem(Pattern.compile(".*\\$\\d.*"));
+        FILTER_FORBID_ANONYMOUS.addAllowedItem(Pattern.compile(".*\\$.*"));
         FILTER_FORBID_PRIMITIVES.addAllowedItem(Pattern.compile("[^.]"));
         FILTER_FORBID_EXCEPTION.addAllowedItem(Pattern.compile(".*Exception"));
-        FILTER_FORBID_BASE_CLASSES.addAllowedItem(Pattern.compile("java\\.(lang|io)\\..*"));
+        FILTER_FORBID_PACKAGEINFO.addAllowedItem(Pattern.compile(".*package-info"));
+        FILTER_FORBID_BASE_CLASSES.addAllowedItem(Pattern.compile("java\\.(lang|io|util)\\..*"));
 
         FILTER_RELATION_FORBID_TO_PRIMITIVE.setFilter(FILTER_FORBID_PRIMITIVES);
         FILTER_RELATION_FORBID_TO_BASE.setFilter(FILTER_FORBID_BASE_CLASSES);
@@ -204,6 +207,7 @@ public class Filters {
         FILTERS.put("FILTER_FORBID_ANONYMOUS", FILTER_FORBID_ANONYMOUS);
         FILTERS.put("FILTER_FORBID_PRIMITIVES", FILTER_FORBID_PRIMITIVES);
         FILTERS.put("FILTER_FORBID_EXCEPTION", FILTER_FORBID_EXCEPTION);
+        FILTERS.put("FILTER_FORBID_PACKAGEINFO", FILTER_FORBID_PACKAGEINFO);
         FILTERS.put("FILTER_FORBID_BASE_CLASSES", FILTER_FORBID_BASE_CLASSES);
 
         // Relations Filters
