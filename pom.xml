@@ -76,7 +76,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>com.github.juanmf</groupId>
 				<artifactId>java2PlantUML-maven-plugin</artifactId>
 				<version>1.0-bdal-1</version>
@@ -98,7 +98,7 @@
 					<parse.classesFilter>FILTER_FORBID_ANONIMOUS</parse.classesFilter>
 					<parse.relationsFilter>FILTER_CHAIN_RELATION_STANDARD</parse.relationsFilter>
 				</configuration>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<groupId>com.github.jeluard</groupId>
 				<artifactId>plantuml-maven-plugin</artifactId>
